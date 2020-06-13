@@ -1,0 +1,175 @@
+<html lang="en">
+<head>
+    <!-- credit to https://codepen.io/codifiedconcepts/pen/vXgvQL for the 8-ball -->
+    <!-- credit to https://favicon.io/emoji-favicons/alarm-clock/ for the favicon -->
+
+    <title>Exam Timer</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"
+            integrity="sha384-o6l2EXLcx4A+q7ls2O2OP2Lb2W7iBgOsYvuuRI6G+Efbjbk6J4xbirJpHZZoHbfs"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"
+            integrity="sha384-vIp38BeRN82wlvPB8/vo/5e0J1/gn7WfUf1Qq9bdh79iMPxjry99thNkscQG1b8C"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"
+            integrity="sha384-BiN1bGszLSTO87+pMGYkZWJ3YRpAJ5lOu17mR/6SNsWXav5I5aw/HdrFeC1szmo6"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"
+          integrity="sha384-No+VI8Wwi7LzQn9F3FVzBXMxHH2DQpi1C2B8xrgG/EcPXRuAv1gUo8zA92+F+sEz" crossorigin="anonymous">
+
+    <script src="dateTimePicker.min.js"></script>
+    <script src="script.js"></script>
+
+    <link rel="stylesheet" href="dateTimePicker.min.css">
+    <link rel="stylesheet" href="site.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+</head>
+<body class="bg-light">
+
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Exam Timer</h2>
+        <p class="text-muted">(does not, unfortunately, provide answers ... for that, you need the <a
+                href="#magic8Ball">Magic 8 ball</a>)</p>
+    </div>
+
+    <div class="row" id="row-timer" style="display: none">
+        <div class="col-md-8 offset-md-2">
+            <div id="timer" class="alert alert-dark">
+                <p id="timer-end-time" class="text-muted my-3">Calculating...</p>
+                <h4 id="timer-time-remaining" class="alert-heading">Calculating...</h4>
+                <p class="text-muted my-3"><span id="timer-question-total"></span><span
+                        id="timer-question-progress"></span></p>
+                <div class="progress my-3" id="progress-bar-parent">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                         style="width: 0%"></div>
+                </div>
+                <button id="reset-timer" type="button" class="btn btn-outline-dark my-3">Reset timer</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="row-options">
+        <div class="col-md-8 offset-md-2">
+            <form class="needs-validation" novalidate>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="questions">Num questions</label> <input type="number" class="form-control"
+                                                                            id="questions" placeholder="" value="100"
+                                                                            required>
+                    </div>
+
+                    <div class="mt-3 mb-3 mb-md-0 mt-md-0 col-md-6 d-md-flex flex-wrap align-content-end justify-content-center">
+                        <label for="timer-type">Select mode</label>
+                        <div class="btn-group w-100" role="group" aria-label="Select timer type" id="timer-type">
+                            <button type="button" class="btn btn-outline-secondary w-50" data-type="duration">
+                                duration
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary active w-50" data-type="time">time
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 d-none flex-wrap align-content-end" id="item-duration">
+                        <label for="mins">End in</label><input type="number" class="form-control" id="mins"
+                                                               placeholder="mins" value="" required>
+                    </div>
+
+                    <div class="col-md-3 d-block d-md-flex flex-wrap align-content-end" id="item-time">
+                        <label for="endTimeDummy">End at time</label> <input type="text" class="form-control"
+                                                                             placeholder="End time" data-toggle="modal"
+                                                                             data-target="#endTimeModal"
+                                                                             id="endTimeDummy" name="endTimeDummy"
+                                                                             value=""> <input type="hidden" id="endTime"
+                                                                                              name="endTime" value="">
+
+                        <div class="modal fade" id="endTimeModal" tabindex="-1" role="dialog"
+                             aria-labelledby="endTimeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="endTimeModalLabel">Exam end time (HH:MM)</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id="endTimePicker"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button id="endTimeModalCancel" type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Cancel
+                                        </button>
+                                        <button id="endTimeModalSubmit" type="button" class="btn btn-primary"
+                                                data-dismiss="modal">OK
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row d-none" id="row-time">
+
+                </div>
+                <hr class="mb-4 mt-4">
+                <button id="startTimer" class="btn btn-primary btn-lg btn-block" type="button">Start timer</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="magic8BallModal" tabindex="-1" role="dialog" aria-labelledby="magic8BallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="magic8BallModalLabel">Magic 8 Ball</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <button id="magic8BallQuestion" class="btn btn-outline-primary btn-block" type="button">Magic 8
+                        Ball, give me the answer!
+                    </button>
+
+                    <div class="eightBall">
+                        <img id="eightBallImage" src="8BallQuestion.png" alt="ball">
+                        <p id="eightBallAnswer" class="eightBallAnswer"></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Exit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted"><a href="https://github.com/rmacd/exam-timer"><i class="fab fa-github"></i> fork me on github</span>
+    </div>
+</footer>
+
+</body>
+</html>

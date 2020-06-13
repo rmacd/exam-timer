@@ -1,0 +1,56 @@
+.glyphicon-chevron-down, .glyphicon-chevron-up {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.glyphicon-chevron-up:before {
+    content: "\f077"
+}
+
+.glyphicon-chevron-down:before {
+    content: "\f078"
+}
+
+.hidden {
+    display: none
+}
+
+/* 8ball */
+
+.eightBall {
+    position: relative;
+}
+
+#eightBallImage{
+    width: 100%;
+    max-width: 40em;
+}
+
+.eightBallAnswer {
+    color: #222;
+    text-transform: uppercase;
+    margin: 0;
+    position: absolute;
+    top: 38%;
+    left: 46%;
+    width: 11%;
+    font-size: 60%;
+    text-align: center;
+}
+
+/* footer: https://getbootstrap.com/docs/4.0/examples/sticky-footer/sticky-footer.css */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 60px; /* Margin bottom by footer height */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* Set the fixed height of the footer here */
+    line-height: 60px; /* Vertically center the text there */
+    background-color: #f5f5f5;
+}

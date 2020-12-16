@@ -76,20 +76,20 @@
                     <div class="mt-3 mb-3 mb-md-0 mt-md-0 col-md-6 d-md-flex flex-wrap align-content-end justify-content-center">
                         <label for="timer-type">Select mode</label>
                         <div class="btn-group w-100" role="group" aria-label="Select timer type" id="timer-type">
-                            <button type="button" class="btn btn-outline-secondary w-50" data-type="duration">
+                            <button type="button" class="btn btn-outline-secondary active w-50" data-type="duration">
                                 duration
                             </button>
-                            <button type="button" class="btn btn-outline-secondary active w-50" data-type="time">time
+                            <button type="button" class="btn btn-outline-secondary w-50" data-type="time">time
                             </button>
                         </div>
                     </div>
 
-                    <div class="col-md-3 d-none flex-wrap align-content-end" id="item-duration">
+                    <div class="col-md-3 d-block d-md-flex flex-wrap align-content-end" id="item-duration">
                         <label for="mins">End in</label><input type="number" class="form-control" id="mins"
-                                                               placeholder="mins" value="" required>
+                                                               placeholder="mins" value="100" required>
                     </div>
 
-                    <div class="col-md-3 d-block d-md-flex flex-wrap align-content-end" id="item-time">
+                    <div class="col-md-3 d-none flex-wrap align-content-end" id="item-time">
                         <label for="endTimeDummy">End at time</label> <input type="text" class="form-control"
                                                                              placeholder="End time" data-toggle="modal"
                                                                              data-target="#endTimeModal"
